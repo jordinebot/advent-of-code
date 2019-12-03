@@ -16,5 +16,5 @@ readline
 		totalFuel += calculateRequiredFuel(+mass);
 	})
 	.on("close", function() {
-		console.log(totalFuel);
+		console.log("[day-1] Answer:", totalFuel);
 	});

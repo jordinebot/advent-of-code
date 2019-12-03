@@ -1,10 +1,10 @@
 {
-  "name": "day1",
+  "name": "day-1",
   "version": "1.0.0",
   "description": "Fuel calculator",
-  "main": "day1.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node day1.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/jordinebot/advent-of-code/issues"
   },
-  "homepage": "https://github.com/jordinebot/advent-of-code#readme"
+  "homepage": "https://github.com/jordinebot/advent-of-code#readme",
+  "devDependencies": {
+    "eslint": "^6.7.2"
+  }
 }
