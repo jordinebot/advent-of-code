@@ -1,7 +1,9 @@
 const fs = require("fs");
 
 const EOS = ",";
-const OPCODE_SIZE = 4;
+const MAX_NOUN = 100;
+const MAX_VERB = 100;
+const GRAVITY_ASSIST = 19690720;
 
 const OP_1 = 1;
 const OP_2 = 2;
@@ -13,17 +15,23 @@ const opcodes = {
 	HALT: 99
 };
 
+const instructionSizes = {
+	[opcodes.ADD]: 4,
+	[opcodes.MUL]: 4,
+	[opcodes.HALT]: 1
+};
+
 function read(address) {
-	if (typeof cpu.program[address] === "undefined") {
+	if (typeof computer.memory[address] === "undefined") {
 		throw new Error(
 			`Memory Access Violation. Cannot read from address ${address}`
 		);
 	}
-	return +cpu.program[address];
+	return +computer.memory[address];
 }
 
 function write(address, value) {
-	if (typeof cpu.program[address] === "undefined") {
+	if (typeof computer.memory[address] === "undefined") {
 		throw new Error(
 			`Memory Access Violation. Cannot write to address ${address}`
 		);
@@ -33,63 +41,79 @@ function write(address, value) {
 			`Memory Access Denied. Cannot write invalid value ${value}`
 		);
 	}
-	return (cpu.program[address] = value);
+	return (computer.memory[address] = value);
 }
 
-function addr1() {
-	return cpu.program[cpu.pc + OP_1];
+function addrParam1() {
+	return computer.memory[computer.ip + OP_1];
 }
 
-function addr2() {
-	return cpu.program[cpu.pc + OP_2];
+function addrParam2() {
+	return computer.memory[computer.ip + OP_2];
 }
 
 function register() {
-	return cpu.program[cpu.pc + REGISTER];
+	return computer.memory[computer.ip + REGISTER];
 }
 
 function execute() {
-	const opcode = cpu.program[cpu.pc];
+	const opcode = computer.memory[computer.ip];
 	if (typeof opcode === "undefined") {
-		throw new Error("Invalid Program Counter");
+		throw new Error("Invalid memory Counter");
 	}
 	switch (opcode) {
 		case opcodes.ADD:
-			write(register(), read(addr1()) + read(addr2()));
+			write(register(), read(addrParam1()) + read(addrParam2()));
 			break;
 		case opcodes.MUL:
-			write(register(), read(addr1()) * read(addr2()));
+			write(register(), read(addrParam1()) * read(addrParam2()));
 			break;
 		default:
 			throw new Error("Unknown opcode");
 	}
-	cpu.pc += OPCODE_SIZE;
+	computer.ip += instructionSizes[opcode];
 }
 
 function run() {
-	while (cpu.program[cpu.pc] !== opcodes.HALT) execute(cpu);
+	while (computer.memory[computer.ip] !== opcodes.HALT) execute(computer);
+	return computer.memory[0];
 }
 
 function compile(code) {
 	return code.split(EOS).map(opcode => +opcode);
 }
 
-function applyFix(program) {
-	program[1] = 12;
-	program[2] = 2;
+function applyFix(program, noun, verb) {
+	program[1] = noun;
+	program[2] = verb;
 	return program;
 }
 
-const cpu = {
-	pc: 0,
-	program: []
+function load(program = []) {
+	computer.ip = 0;
+	computer.memory = program;
+}
+
+const computer = {
+	ip: 0,
+	memory: []
 };
 
 fs.readFile("./input", "utf8", (err, code) => {
 	if (err) throw new Error(err.message);
 
-	cpu.program = applyFix(compile(code));
-	run(cpu);
+	let noun = 0;
+	let verb = -1;
+	let gravity = null;
+	do {
+		if (++verb === MAX_VERB) {
+			noun++;
+			verb = 0;
+		}
+		const program = applyFix(compile(code), noun, verb);
+		load(program);
+		gravity = run(computer);
+	} while (gravity !== GRAVITY_ASSIST && noun < MAX_NOUN);
 
-	console.log(`[day-2] Answer: ${cpu.program[0]}`);
+	console.log(`[day-2] Answer: ${100 * noun + verb}`);
 });
