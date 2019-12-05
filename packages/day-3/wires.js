@@ -65,6 +65,14 @@ function getLowerDistance(points = [], reference = new Point(0, 0)) {
 		.reduce((min, current) => (min < current ? min : current));
 }
 
+function calculateSignalDelay(wire, intersection) {
+	intersection = intersection.toString();
+	const delay = wire
+		.map(point => point.toString())
+		.findIndex(point => point === intersection);
+	return Math.max(0, delay);
+}
+
 function wire(steps, origin = new Point(0, 0)) {
 	let path = [origin];
 	steps.forEach(step => {
@@ -75,4 +83,9 @@ function wire(steps, origin = new Point(0, 0)) {
 	return path;
 }
 
-module.exports = { wire, wireIntersections, getLowerDistance };
+module.exports = {
+	calculateSignalDelay,
+	getLowerDistance,
+	wire,
+	wireIntersections
+};

@@ -1,7 +1,6 @@
 const fs = require("fs");
 const readline = require("readline");
-
-const { wire, wireIntersections, getLowerDistance } = require("./wires");
+const { calculateSignalDelay, wire, wireIntersections } = require("./wires");
 
 const wires = [];
 
@@ -15,6 +14,13 @@ readline
 	})
 	.on("close", function() {
 		const intersections = wireIntersections(wires);
-		const lowerDistance = getLowerDistance(intersections);
-		console.log("[day-3] Answer:", lowerDistance);
+		const delays = intersections.map(
+			intersection =>
+				calculateSignalDelay(wires[0], intersection) +
+				calculateSignalDelay(wires[1], intersection)
+		);
+		console.log(
+			"[day-3] Answer:",
+			delays.reduce((min, current) => (min < current ? min : current))
+		);
 	});

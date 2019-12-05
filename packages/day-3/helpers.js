@@ -13,7 +13,7 @@ class Point {
 }
 
 function manhattanDist(a, b) {
-	if (!a instanceof Point || !b instanceof Point) {
+	if (!(a instanceof Point) || !(b instanceof Point)) {
 		throw new Error("Manhattan Distance Error: not enought points");
 	}
 	return Math.abs(b.x - a.x) + Math.abs(b.y - a.y);
