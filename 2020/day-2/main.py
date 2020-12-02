@@ -28,23 +28,33 @@ def get_db_entry(sample):
 	policy_parser = re.compile("(\d+)-(\d+) ([a-z]): ([a-z]+)")
 	return policy_parser.findall(sample)[0]
 
-def is_valid_password(entry):
+
+def is_valid_password_old_method(entry):
 	min, max, char, password = entry
 	rule = re.compile(f"[^{char}]")
 	only_valid_chars = rule.sub("", password)
 	return int(min) <= len(only_valid_chars) <= int(max)
 
 
-def count_valid_passwords(data):
+def is_valid_password_new_method(entry):
+	i, j, char, password = entry
+	return (password[int(i) - 1] == char and password[int(j) - 1] != char) or (password[int(i) - 1] != char and password[int(j) - 1] == char)
+
+def count_valid_passwords(data, is_valid):
 	valid = 0
 	for sample in data:
 		entry = get_db_entry(sample)
-		if (is_valid_password(entry)):
+		if (is_valid(entry)):
 			valid += 1
 	return valid
 
 t0 = time.time()
-valid_passwords = count_valid_passwords(data)
+valid_passwords = count_valid_passwords(data, is_valid_password_old_method)
 t1 = time.time()
-print("Part 1: Finding %d valid passwords out of %d took %fms" % (valid_passwords, len(data), (t1 - t0) * 1000))
+print("Part 1: Finding %d valid passwords out of %d took %fms with the old method" % (valid_passwords, len(data), (t1 - t0) * 1000))
+
+t0 = time.time()
+valid_passwords = count_valid_passwords(data, is_valid_password_new_method)
+t1 = time.time()
+print("Part 2: Finding %d valid passwords out of %d took %fms with the new method" % (valid_passwords, len(data), (t1 - t0) * 1000))
 
