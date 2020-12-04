@@ -1,5 +1,3 @@
-import fileinput
-
 TREE = '#'
 
 f = open("input", "rt")
