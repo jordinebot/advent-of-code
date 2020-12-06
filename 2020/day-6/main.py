@@ -3,7 +3,7 @@ groups = f.read().strip().split("\n\n")
 
 counts = []
 for group in groups:
-	answers = list(set([*group.replace("\n", "")]))
+	answers = set([*group.replace("\n", "")])
 	counts.append(len(answers))
 
 print("Part 1: The sum of all counts is %d" % sum(counts))
