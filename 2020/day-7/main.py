@@ -26,9 +26,8 @@ def find_containers(target):
 	containers = [bag for bag, content in bags.items() if target in content]
 	return containers
 
-containers = set(find_containers("shiny gold"))
-check = set(containers)
-
+containers = set()
+check = set(["shiny gold"])
 while len(check) > 0:
 	found = find_containers(check.pop())
 	containers.update(found)
