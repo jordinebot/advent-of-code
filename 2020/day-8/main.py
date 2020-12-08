@@ -22,15 +22,15 @@ def run(program):
     ran = []
     while not i in ran:
         if i >= len(program):
-            return (True, acc)
+            return (True, acc, None)
         else:
             ran.append(i)
             ins, val = program[i]
             i, acc = exe(ins, val, i, acc)
-    return (False, acc)
+    return (False, acc, ran)
 
 t0 = T.time()
-exit, acc = run(program)
+exit, acc, ran = run(program)
 t1 = T.time()
 print("Part 1: The value of acc before jumping into the second infinite loop iteration is %d (%fms)" % (acc, (t1-t0) * 1000))
 
@@ -47,16 +47,38 @@ def find_next_fork(forked):
             forked.append(i)
             fork[i] = ["nop", val]
             return fork
+    return []
+
 
 
 t0 = T.time()
 forked = [0]
-exit, acc = run(program)
+exit, acc, ran = run(original)
 while not exit:
     program = find_next_fork(forked)
-    exit, acc = run(program)
+    exit, acc, ran= run(program)
 t1 = T.time()
 
-print("Part 2: The value of acc after fixing the program is %d (%fms)" % (acc, (t1-t0) * 1000))
+print("Part 2 (brute force): The value of acc after fixing the program is %d (%fms)" % (acc, (t1-t0) * 1000))
 
 
+def backtrack(ran, tracked):
+    fork = copy.deepcopy(original)
+    for i in reversed(ran):
+        ins, val = original[i]
+        if ins != "acc" and not i in tracked:
+            tracked.append(i)
+            fork[i] = ["jmp" if ins == "nop" else "nop", val]
+            return fork
+    return []
+
+
+t0 = T.time()
+exit, acc, ran = run(original)
+tracked = []
+while not exit:
+    program = backtrack(ran, tracked)
+    exit, acc, ran = run(program)
+t1 = T.time()
+
+print("Part 2 (backtrack): The value of acc after fixing the program is %d (%fms)" % (acc, (t1-t0) * 1000))
