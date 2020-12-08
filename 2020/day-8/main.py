@@ -14,5 +14,5 @@ while not i in ran:
 		i += 1
 		acc += int(val)
 
-print(acc)
+print("Part 1: The value of acc before jumping into the second infinite loop iteration is %d" % acc)
 
