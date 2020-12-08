@@ -1,3 +1,4 @@
+import time as T
 import copy
 
 f = open("input", "rt")
@@ -28,8 +29,10 @@ def run(program):
             i, acc = exe(ins, val, i, acc)
     return (False, acc)
 
+t0 = T.time()
 exit, acc = run(program)
-print("Part 1: The value of acc before jumping into the second infinite loop iteration is %d" % acc)
+t1 = T.time()
+print("Part 1: The value of acc before jumping into the second infinite loop iteration is %d (%fms)" % (acc, (t1-t0) * 1000))
 
 
 def find_next_fork(forked):
@@ -46,12 +49,14 @@ def find_next_fork(forked):
             return fork
 
 
+t0 = T.time()
 forked = [0]
 exit, acc = run(program)
 while not exit:
     program = find_next_fork(forked)
     exit, acc = run(program)
+t1 = T.time()
 
-print("Part 2: The value of acc after fixing the program is %d" % acc)
+print("Part 2: The value of acc after fixing the program is %d (%fms)" % (acc, (t1-t0) * 1000))
 
 
