@@ -25,7 +25,8 @@ for i in range(len(buses)):
 	if buses[i] != "x":
 		schedule[i] = int(buses[i])
 
-def crt(schedule):
+# http://homepages.math.uic.edu/~leon/mcs425-s08/handouts/chinese_remainder.pdf
+def chinese_remainder(schedule):
 	a = [*schedule.keys()]
 	m = [*schedule.values()]
 	M = math.prod(m)
@@ -34,5 +35,5 @@ def crt(schedule):
 	w = [y[i] * z[i] % M for i in range(len(y))]
 	return sum([(m[i] - a[i]) * w[i] for i in range(len(w))]) % M
 
-print("Part 2: Earliest timestamp with offsets matching positions is %d" % crt(schedule))
+print("Part 2: Earliest timestamp with offsets matching positions is %d" % chinese_remainder(schedule))
 
