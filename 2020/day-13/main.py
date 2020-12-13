@@ -1,7 +1,8 @@
 import re
-from functools import reduce
+import math
+from sympy import mod_inverse
 
-f = open("test", "rt")
+f = open("input", "rt")
 t, buses = f.read().splitlines()
 
 t = int(t)
@@ -24,15 +25,14 @@ for i in range(len(buses)):
 	if buses[i] != "x":
 		schedule[i] = int(buses[i])
 
-t = 0
-delta = -1
-found = False
+def crt(schedule):
+	a = [*schedule.keys()]
+	m = [*schedule.values()]
+	M = math.prod(m)
+	z = [M // mi for mi in m]
+	y = [mod_inverse(zi, m[i]) for i, zi in enumerate(z)]
+	w = [y[i] * z[i] % M for i in range(len(y))]
+	return sum([m[i] * w[i] for i in range(len(w))]) % M
 
-deltas = [*schedule.keys()]
-while not found:
-	delta +=1
-	departures = [(t + delta + deltas[i]) % id for i, id in enumerate(schedule.values())]
-	if not any(departures):
-		found = True
+print("Part 2: Earliest timestamp with offsets matching positions is %d" % crt(schedule))
 
-print("Part 2: Earliest timestamp with offsets matching positions is %d" % (t + delta))
