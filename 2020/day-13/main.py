@@ -32,7 +32,7 @@ def crt(schedule):
 	z = [M // mi for mi in m]
 	y = [mod_inverse(zi, m[i]) for i, zi in enumerate(z)]
 	w = [y[i] * z[i] % M for i in range(len(y))]
-	return sum([m[i] * w[i] for i in range(len(w))]) % M
+	return sum([(m[i] - a[i]) * w[i] for i in range(len(w))]) % M
 
 print("Part 2: Earliest timestamp with offsets matching positions is %d" % crt(schedule))
 
