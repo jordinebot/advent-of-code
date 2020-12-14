@@ -74,4 +74,4 @@ for ins in program:
 			mem[to_dec(addr)] = int(val)
 
 
-print("Part 1: The sum of all values in memory is %d" % sum(mem.values()))
+print("Part 2: The sum of all values in memory is %d" % sum(mem.values()))
