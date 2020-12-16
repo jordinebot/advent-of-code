@@ -1,3 +1,5 @@
+from numpy import prod
+
 f = open("./input", "rt")
 raw_rules, raw_my_ticket, raw_nearby_tickets = f.read().strip().split("\n\n")
 
@@ -17,21 +19,21 @@ for nearby in raw_nearby_tickets.splitlines()[1:]:
 
 
 def in_range(value):
-	for r in rules.values():
-		if value in r[0] or value in r[1]:
+	for rule in rules.values():
+		if value in rule[0] or value in rule[1]:
 			return True
 	return False
 
 
 def is_valid_ticket(ticket):
-	for t in ticket:
-		if in_range(t):
-			return True
-	return False
+	for v in ticket:
+		if not in_range(v):
+			return False
+	return True
 
 
 def scanning_error_rate(ticket):
-	out_of_range = [t for t in ticket if not in_range(t)]
+	out_of_range = [v for v in ticket if not in_range(v)]
 	return sum(out_of_range)
 
 
@@ -39,4 +41,26 @@ nearby_tickets_scanning_error_rate = sum([scanning_error_rate(t) for t in nearby
 print("Part 1: The sum of scanning error rate for nearby tickets is %d" % nearby_tickets_scanning_error_rate)
 
 
-# valid_nearby_tickets = [*map(lambda t: is_valid_ticket(t), nearby_tickets)]
+valid_nearby_tickets = [t for t in nearby_tickets if is_valid_ticket(t)]
+
+def find_matching_keys(value):
+	return [rule_key for rule_key, rule in rules.items() if value in rule[0] or value in rule[1]]
+
+
+rosetta = {}
+matches = { i: set(rules.keys()) for i in range(len(my_ticket)) }
+while len(rosetta) < len(my_ticket):
+	for t in valid_nearby_tickets:
+		for i, v in enumerate(t):
+			if i in matches:
+				matching = find_matching_keys(v)
+				matches[i] = matches[i].intersection(matching)
+				if len(matches[i]) == 1:
+					key = matches.pop(i, None).pop()
+					rosetta[key] = i
+					for j in matches:
+						matches[j].remove(key)
+
+
+departure_fields = [my_ticket[index] for key, index in rosetta.items() if "departure" in key]
+print("Part 2: The product of all departure fields is %d" % prod(departure_fields))
