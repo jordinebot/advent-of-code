@@ -8,16 +8,16 @@ f = open('./input', 'rt')
 z0 = f.read().splitlines()
 
 space = {
-	(x, y, 0) : z0[y][x] for y in range(len(z0)) for x in range(len(z0[y]))
+	(x, y, 0, 0) : z0[y][x] for y in range(len(z0)) for x in range(len(z0[y]))
 }
 
-deltas = {d for d in itertools.product((0, 1, -1), repeat = 3) if d != (0, 0, 0)}
+deltas = {d for d in itertools.product((0, 1, -1), repeat = 4) if d != (0, 0, 0, 0)}
 def neighbours(c):
-	x, y, z = c
+	x, y, z, w = c
 	n = []
 	for d in deltas:
-		d0, d1, d2 = d
-		n.append((x + d0, y + d1, z + d2))
+		d0, d1, d2, d3 = d
+		n.append((x + d0, y + d1, z + d2, w + d3))
 	return n
 
 
@@ -51,4 +51,4 @@ for t in range(0,6):
 
 active_cubes = [c for c in space if is_active(c)]
 
-print('Part 1: Number of active cubes after 6 iterations %d' % len(active_cubes))
+print('Part 2: Number of active cubes after 6 iterations %d' % len(active_cubes))
