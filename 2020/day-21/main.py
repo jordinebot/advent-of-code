@@ -51,3 +51,9 @@ for ingredient in safe_ingredients:
 			count += 1
 
 print("Part 1: The number of times the safe ingredients appear in recipes is", count)
+
+
+keys = sorted(found.keys())
+cannonical = ','.join([found[k] for k in keys])
+
+print("Part 2: The cannonical list of dangerous ingredients is:\n%s" % cannonical)
