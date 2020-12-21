@@ -2,24 +2,22 @@ from copy import deepcopy
 f = open('./input', 'rt')
 data = f.read().splitlines()
 
-allergens = {}
 menu = {}
+allergens = set()
 ingredients = set()
 for line in data:
-	dish, info = line.split(' (')
+	dish, info = line.split(' (contains ')
+
 	dish_ingredients = dish.split()
-	dish_allergens = info.replace(')', '').replace('contains ', '').split(', ')
-	for allergen in dish_allergens:
-		if not allergen in allergens:
-			allergens[allergen] = set()
-		allergens[allergen].update(dish_ingredients)
-	menu[dish] = set(dish_allergens)
 	ingredients.update(dish_ingredients)
+
+	dish_allergens = info.replace(')', '').split(', ')
+	allergens.update(dish_allergens)
+	menu[dish] = set(dish_allergens)
 
 
 found = {}
 original_menu = deepcopy(menu)
-
 while len(found) < len(allergens):
 	found_allergen = None
 	found_ingredient = None
@@ -29,6 +27,8 @@ while len(found) < len(allergens):
 			suspects = recipes[0].intersection(*recipes)
 		elif len(recipes) == 1:
 			suspects = recipes[0]
+		else:
+			suspects = []
 		if len(suspects) == 1:
 			found_allergen = allergen
 			found_ingredient = suspects.pop()
@@ -41,20 +41,13 @@ while len(found) < len(allergens):
 		new_recipe = ' '.join([*set(recipe.split()) - found_ingredients])
 		new_allergens = recipe_allergens - found_allergens
 		new_menu[new_recipe] = new_allergens
-
 	menu = new_menu
 
-
+count = 0
 safe_ingredients = ingredients - set(found.values())
-
-recipes = original_menu.keys()
-counts = {}
 for ingredient in safe_ingredients:
-	counts[ingredient] = 0
-	for recipe in recipes:
-		if ingredient in recipe:
-			counts[ingredient] += 1
-
-count = sum(counts.values())
+	for recipe in original_menu:
+		if ingredient in recipe.split():
+			count += 1
 
 print("Part 1: The number of times the safe ingredients appear in recipes is", count)
