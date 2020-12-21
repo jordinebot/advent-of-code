@@ -5,6 +5,11 @@ rules, strings = f.read().replace('"', '').strip().split('\n\n')
 rules = rules.splitlines()
 strings = strings.splitlines()
 
+loops = {
+	'8': '( 42 + )',
+	'11': '( 42 31 | 42 {2} 31 {2} | 42 {3} 31 {3} | 42 {4} 31 {4} | 42 {5} 31 {5} | 42 {6} 42 {6} )'
+}
+
 data = {}
 repl = {}
 for rule in rules:
@@ -14,9 +19,15 @@ for rule in rules:
 	else:
 		data[index] = pattern if not '|' in pattern else f"( {pattern} )"
 
+
+for key, pattern in loops.items():
+	data[key] = pattern
+
+
 def is_replaceable(pattern):
-	valid = set(['a', 'b', '|', '(', ')'])
+	valid = set(['a', 'b', '|', '(', ')', '+'])
 	valid.update(repl.keys())
+	pattern = re.sub(r'\{\d\}', '', pattern)
 	pattern_chars = set(pattern.split())
 	return pattern_chars.intersection(valid) == pattern_chars
 
@@ -27,7 +38,6 @@ while len(data) > 0:
 	for key in repl:
 		if key in data:
 			del data[key]
-
 
 pattern = repl['0'].replace(' ', '')
 regexp = re.compile(f"^{pattern}$")
