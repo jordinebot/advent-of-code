@@ -34,6 +34,17 @@ def flip(tile):
 	else:
 		return WHITE
 
+def get_neighbours(coord):
+	x, y = coord
+	return [
+		(x + 1, y),
+		(x - 1, y),
+		(x + 0.5, y + 1),
+		(x - 0.5, y + 1),
+		(x + 0.5, y - 1),
+		(x - 0.5, y - 1)
+	]
+
 
 floor = {
 	(0,0): WHITE
@@ -70,6 +81,33 @@ black_tiles = [floor[coord] for coord in floor if floor[coord] == BLACK]
 print('Part 1: The number of black tiles is', len(black_tiles))
 
 
+for day in range(100):
+	to_add = []
+	for coord in floor:
+		N = get_neighbours(coord)
+		for n in N:
+			if not n in floor:
+				to_add.append(n)
+
+	for a in to_add:
+		floor[a] = WHITE
+
+	to_flip = []
+	for coord, color in floor.items():
+		N = get_neighbours(coord)
+		black_n = 0
+		for n in N:
+			if n in floor and floor[n] == BLACK:
+				black_n += 1
+		if color == BLACK and (black_n == 0 or black_n > 2):
+			to_flip.append(coord)
+		if color == WHITE and black_n == 2:
+			to_flip.append(coord)
 
 
+	for coord in to_flip:
+		floor[coord] = flip(floor[coord])
 
+
+black_tiles = [floor[coord] for coord in floor if floor[coord] == BLACK]
+print('Part 2: The number of black tiles is', len(black_tiles))
