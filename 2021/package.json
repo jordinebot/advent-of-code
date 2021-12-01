@@ -1,0 +1,12 @@
+{
+	"name": "aoc-2021",
+	"type": "module",
+	"version": "1.0.0",
+	"description": "My solutions to AoC 2021 in JS",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "Jordi Nebot",
+	"license": "ISC"
+}
