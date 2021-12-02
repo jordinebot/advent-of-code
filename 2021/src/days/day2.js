@@ -23,7 +23,8 @@ export const day2 = async () => {
 		}
 	});
 
-	console.log('part1', hp * depth);
+	console.log('>>> Day 2');
+	console.log('\tpart1:', hp * depth);
 
 	hp = depth = 0;
 	navigation.forEach(([command, x]) => {
@@ -40,6 +41,5 @@ export const day2 = async () => {
 		}
 	});
 
-	console.log('part2', hp * depth);
-
+	console.log('\tpart2:', hp * depth);
 };

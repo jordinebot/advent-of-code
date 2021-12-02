@@ -1,3 +1,3 @@
-import { day2 } from './days';
+import * as days from './days';
 
-day2();
+Object.values(days).forEach((day) => day());
