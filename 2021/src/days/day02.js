@@ -1,7 +1,7 @@
 import { readStrings } from '../common/helpers';
 
 export const day2 = async () => {
-	const data = await readStrings('src/inputs/input2');
+	const data = await readStrings('src/inputs/input02');
 	const navigation = data
 		.map((instruction) => instruction.split(' '))
 		.map(([command, x]) => [command, parseInt(x, 10)]);

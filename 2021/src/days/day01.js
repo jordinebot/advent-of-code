@@ -3,7 +3,7 @@ import { readNumbers, countIncrements, sumArray } from '../common/helpers';
 const WINDOW_SIZE = 3;
 
 export const day1 = async () => {
-	const data = await readNumbers('src/inputs/input1');
+	const data = await readNumbers('src/inputs/input01');
 
 	const increments = countIncrements(data);
 	console.log('>>> Day 1')
