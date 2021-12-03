@@ -18,3 +18,11 @@ export const countIncrements = (array) =>
 	array.filter((item, index, items) => index > 0 && item > items[index - 1]).length;
 
 export const sumArray = (array) => array.reduce((total, num) => total + num, 0);
+
+export const binStr2IntArray = (binary) => binary.split('').map((b) => (b === '1' ? 1 : 0));
+
+export const sumArrays = (array1, array2) =>
+	array1.reduce((total, current, index) => {
+		total[index] = current + array2[index];
+		return total;
+	}, Array(array1.length).fill(0));
