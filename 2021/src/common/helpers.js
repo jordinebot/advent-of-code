@@ -26,3 +26,5 @@ export const sumArrays = (array1, array2) =>
 		total[index] = current + array2[index];
 		return total;
 	}, Array(array1.length).fill(0));
+
+export const notBit = (bit) => (bit === '1' ? '0' : '1');
