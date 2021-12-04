@@ -61,28 +61,50 @@ export const day4 = async () => {
 	const findWinners = (boards) =>
 		boards.filter((board) => isWinner(board) || isWinner(transposeBoard(board)));
 
-	// Play
+	const findLoser = (boards) =>
+		boards.find((board) => !isWinner(board) && !isWinner(transposeBoard(board)));
+
+	// Round 1
 	let winners = [];
 	let i = -1;
+	const round1 = JSON.parse(JSON.stringify(boards));
 	while (!winners.length && ++i < drawns.length) {
-		markDrawn(drawns[i], boards);
-		winners = findWinners(boards);
+		markDrawn(drawns[i], round1);
+		winners = findWinners(round1);
 	}
 
-	const unmarkedSum = winners[0].reduce(
-		(sum, row) =>
-			sum +
-			sumArray(
-				row.map((cell) => {
-					const [value, marked] = Object.entries(cell)[0];
-					return !marked ? parseInt(value, 10) : 0;
-				})
-			),
-		0
-	);
+	const sumUnmarked = (board) =>
+		board.reduce(
+			(sum, row) =>
+				sum +
+				sumArray(
+					row.map((cell) => {
+						const [value, marked] = Object.entries(cell)[0];
+						return !marked ? parseInt(value, 10) : 0;
+					})
+				),
+			0
+		);
 
-	const lastDrawn = drawns[i];
+	let unmarkedSum = sumUnmarked(winners[0]);
+
+	let lastDrawn = drawns[i];
 
 	console.log('>>> Day 4');
 	console.log('\tpart1:', unmarkedSum * lastDrawn);
+
+	// Round 2
+	i = -1;
+	const round2 = JSON.parse(JSON.stringify(boards));
+
+	while (++i < drawns.length && winners.length !== round2.length - 1) {
+		markDrawn(drawns[i], round2);
+		winners = findWinners(round2);
+	}
+
+	const loser = findLoser(round2);
+
+	lastDrawn = drawns[i];
+	unmarkedSum = sumUnmarked(loser) - lastDrawn;
+	console.log('\tpart2:', unmarkedSum * lastDrawn);
 };
