@@ -28,3 +28,8 @@ export const sumArrays = (array1, array2) =>
 	}, Array(array1.length).fill(0));
 
 export const notBit = (bit) => (bit === '1' ? '0' : '1');
+
+export const range = (start, end) =>
+	Array(end - start + 1)
+		.fill()
+		.map((_, i) => start + i);
