@@ -1,16 +1,16 @@
 import { readFile } from 'fs/promises';
 
-export const readStrings = async (filename) => {
+export const readStrings = async (filename, split = '\n') => {
 	try {
 		const buffer = await readFile(filename);
-		return buffer.toString().trim().split('\n');
+		return buffer.toString().trim().split(split);
 	} catch (error) {
 		console.error(error);
 	}
 };
 
-export const readNumbers = async (filename) => {
-	const buffer = await readStrings(filename);
+export const readNumbers = async (filename, split) => {
+	const buffer = await readStrings(filename, split);
 	return buffer.map((n) => parseInt(n, 10));
 };
 
