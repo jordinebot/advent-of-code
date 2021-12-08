@@ -8,36 +8,38 @@ import { readStrings } from '../common/helpers';
 //	 e    f
 //	  gggg
 
-// Representation:
+const defaultDictionary = {
+	cf: 1,
+	acf: 7,
+	bcdf: 4,
+	abdfg: 5,
+	acdeg: 2,
+	acdfg: 3,
+	abcdfg: 9,
+	abcefg: 0,
+	abdefg: 6,
+	abcdefg: 8
+};
 
-//      0 1 2 3 4 5 6
-//      a b c d e f g
+const sortString = (str) => str.split('').sort().join('');
 
-// 1 -> 0 0 1 0 0 1 0
-// 2 -> 1 0 1 1 1 0 1
-// 3 -> 1 0 1 1 0 1 1
-// 4 -> 0 1 1 1 0 1 0
-// 5 -> 1 1 0 1 0 1 1
-// 6 -> 1 1 0 1 1 1 1
-// 7 -> 1 0 1 0 0 1 0
-// 8 -> 1 1 1 1 1 1 1
-// 9 -> 1 1 1 1 0 1 1
+const patternIncludes = (pattern, subpattern) => {
+	for (let c of subpattern) {
+		if (!pattern.includes(c)) {
+			return false;
+		}
+	}
+	return true;
+};
 
-// Number of segments by digit
-// 0 -> 6
-// 1 -> 2
-// 2 -> 5
-// 3 -> 5
-// 4 -> 4
-// 5 -> 5
-// 6 -> 6
-// 7 -> 3
-// 8 -> 7
-// 9 -> 6
+const decode = (pattern, dictionary = defaultDictionary) => {
+	const sorted = sortString(pattern);
+	return dictionary[sorted];
+};
 
 export const day8 = async () => {
-	// const data = await readStrings('src/inputs/input08');
-	const data = await readStrings('src/inputs/sample08');
+	const data = await readStrings('src/inputs/input08');
+	// const data = await readStrings('src/inputs/sample08');
 	const notes = data.map((note) => note.split(' | ').map((part) => part.split(' ')));
 
 	const uniqueLengths = [2, 4, 3, 7];
@@ -50,4 +52,74 @@ export const day8 = async () => {
 
 	console.log('>>> Day 8');
 	console.log('\tpart1:', uniqueQty);
+
+	const total = notes.reduce((total, [patterns, digits]) => {
+		const dictionary = {};
+		const memory = {};
+		const orphans = [];
+
+		patterns
+			.sort((a, b) => a.length - b.length)
+			.forEach((pattern) => {
+				const sorted = sortString(pattern);
+				switch (pattern.length) {
+					case 2:
+						dictionary[sorted] = 1;
+						memory[1] = sorted;
+						break;
+					case 3:
+						dictionary[sorted] = 7;
+						memory[7] = sorted;
+						break;
+					case 4:
+						dictionary[sorted] = 4;
+						memory[4] = sorted;
+						break;
+					case 5:
+						if (patternIncludes(sorted, memory[7])) {
+							dictionary[sorted] = 3;
+							memory[3] = sorted;
+						} else {
+							orphans.push(sorted);
+						}
+						break;
+					case 6:
+						if (patternIncludes(sorted, memory[3])) {
+							dictionary[sorted] = 9;
+							memory[9] = sorted;
+						} else if (patternIncludes(sorted, memory[7])) {
+							dictionary[sorted] = 0;
+							memory[0] = sorted;
+						} else {
+							dictionary[sorted] = 6;
+							memory[6] = sorted;
+						}
+						break;
+					case 7:
+						dictionary[sorted] = 8;
+						memory[8] = sorted;
+						break;
+				}
+			});
+
+		orphans.forEach((o) => {
+			if (patternIncludes(memory[6], o)) {
+				dictionary[o] = 5;
+				memory[5] = o;
+			} else {
+				dictionary[o] = 2;
+				memory[2] = o;
+			}
+		});
+
+		const value = parseInt(
+			digits.reduce((v, d) => {
+				return v + decode(d, dictionary);
+			}, ''),
+			10
+		);
+		return total + value;
+	}, 0);
+
+	console.log('\tpart2:', total);
 };
