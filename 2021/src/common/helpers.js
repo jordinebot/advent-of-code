@@ -36,4 +36,4 @@ export const range = (start, end) =>
 
 export const median = (array) => array.slice().sort((a, b) => a - b)[Math.floor(array.length / 2)];
 
-export const average = (array) => sumArray(array) / array.length;
+export const mean = (array) => sumArray(array) / array.length;
