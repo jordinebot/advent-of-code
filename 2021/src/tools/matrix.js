@@ -54,3 +54,7 @@ export const getBasin = (point, matrix) => {
 	}
 	return basin;
 };
+
+export function copyMatrix(m) {
+	return m.map((row) => row.slice());
+}

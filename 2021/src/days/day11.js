@@ -13,19 +13,24 @@ export const day11 = async () => {
 		console.log('\n');
 	};
 
-	const DAYS = 100;
+	const DAYS = 400;
 	let flashes = 0;
 	let wave = [];
 	let flashed = [];
+	let allFlash = 0;
 
 	const increaseEnergy = ([x, y], o) => {
-		o[x][y] = (o[x][y] + 1);
+		o[x][y] = o[x][y] + 1;
 	};
 
 	const isFlashing = ([x, y], o) => o[x][y] > 9;
 
 	const id = ([x, y]) => [x, y].join(',');
 	const coord = (id) => id.split(',').map((x) => parseInt(x, 10));
+
+	function octoStep(octopuses) {
+		// const 
+	}
 
 	for (let day = 0; day < DAYS; day++) {
 		flashed = [];
@@ -67,7 +72,11 @@ export const day11 = async () => {
 			octopuses[x][y] = 0;
 		});
 
+		if (flashed.length === 100 && allFlash === 0) {
+			allFlash = day + 1; 
+		}
 	}
 	console.log('>>> Day 11');
 	console.log('\tpart1:', flashes);
+	console.log('\tpart2:', allFlash);
 };

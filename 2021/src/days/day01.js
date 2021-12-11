@@ -1,21 +1,26 @@
-import { readNumbers, countIncrements, sumArray } from '../common/helpers';
+import { readNumbers } from '../tools/data';
+import { countIncrements, sum } from '../tools/array';
 
-const WINDOW_SIZE = 3;
+function part1(input) {
+	return countIncrements(input);
+}
 
-export const day1 = async () => {
-	const data = await readNumbers('src/inputs/input01');
+function part2(input, size) {
+	return countIncrements(
+		input.reduce((result, _, index) => {
+			if (index + size <= input.length) {
+				result.push(sum(input.slice(index, index + size)));
+			}
+			return result;
+		}, [])
+	);
+}
 
-	const increments = countIncrements(data);
-	console.log('>>> Day 1')
-	console.log('\tpart1:', increments);
+export async function day1() {
+	const WINDOW_SIZE = 3;
+	const data = await readNumbers('data/input01');
 
-	const sums = data.reduce((result, _, index) => {
-		if (index + WINDOW_SIZE < data.length) {
-			result.push(sumArray(data.slice(index, index + WINDOW_SIZE)));
-		}
-		return result;
-	}, []);
-
-	const sumIncrements = countIncrements(sums);
-	console.log('\tpart2:', sumIncrements);
-};
+	console.log('Day 1 >>>');
+	console.log('    Part 1:', part1(data));
+	console.log('    Part 2:', part2(data, WINDOW_SIZE));
+}

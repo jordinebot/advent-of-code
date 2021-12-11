@@ -1,19 +1,19 @@
-import { readStrings } from '../common/helpers';
+import { readStrings } from '../tools/data';
 
-export const day2 = async () => {
-	const data = await readStrings('src/inputs/input02');
-	const navigation = data
+function parseNavigation(input) {
+	return input
 		.map((instruction) => instruction.split(' '))
 		.map(([command, x]) => [command, parseInt(x, 10)]);
+}
 
+export function part1(input) {
 	let depth = 0;
-	let hp = 0;
-	let aim = 0;
+	let position = 0;
 
-	navigation.forEach(([command, x]) => {
+	input.forEach(([command, x]) => {
 		switch (command) {
 			case 'forward':
-				hp += x;
+				position += x;
 				break;
 			case 'down':
 				depth += x;
@@ -22,15 +22,18 @@ export const day2 = async () => {
 				depth -= x;
 		}
 	});
+	return position * depth;
+}
 
-	console.log('>>> Day 2');
-	console.log('\tpart1:', hp * depth);
+export function part2(input) {
+	let aim = 0;
+	let depth = 0;
+	let position = 0;
 
-	hp = depth = 0;
-	navigation.forEach(([command, x]) => {
+	input.forEach(([command, x]) => {
 		switch (command) {
 			case 'forward':
-				hp += x;
+				position += x;
 				depth += aim * x;
 				break;
 			case 'down':
@@ -41,5 +44,14 @@ export const day2 = async () => {
 		}
 	});
 
-	console.log('\tpart2:', hp * depth);
-};
+	return position * depth;
+}
+
+export async function day2() {
+	const data = await readStrings('data/input02');
+	const navigation = parseNavigation(data);
+
+	console.log('Day 2 >>>');
+	console.log('    Part 1:', part1(navigation));
+	console.log('    Part 2:', part2(navigation));
+}

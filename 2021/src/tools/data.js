@@ -1,23 +1,26 @@
 import { readFile } from 'fs/promises';
 
-export const readStrings = async (filename, split = '\n') => {
+export async function readStrings(filename, split = '\n') {
+	let buffer = undefined;
 	try {
-		const buffer = await readFile(filename);
-		return buffer.toString().trim().split(split);
+		buffer = await readFile(filename);
+		buffer = buffer.toString().trim().split(split);
 	} catch (error) {
 		console.error(error);
 	}
-};
+	return buffer;
+}
 
-export const readNumbers = async (filename, split) => {
+export async function readNumbers(filename, split = '\n') {
 	const buffer = await readStrings(filename, split);
 	return buffer.map((n) => parseInt(n, 10));
-};
+}
 
-export const countIncrements = (array) =>
-	array.filter((item, index, items) => index > 0 && item > items[index - 1]).length;
+export async function readMatrix(filename, split = '\n') {
+	const buffer = await readStrings(filename, split);
+	return buffer.map((row) => row.split('').map((col) => parseInt(col, 10)));
+}
 
-export const sumArray = (array) => array.reduce((total, num) => total + num, 0);
 
 export const binStr2IntArray = (binary) => binary.split('').map((b) => (b === '1' ? 1 : 0));
 
