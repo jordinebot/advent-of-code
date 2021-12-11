@@ -1,4 +1,5 @@
 export const MAX_HEIGHT = 9;
+
 export const getSquareNeighbors = (point, matrix) => {
 	const [x, y] = point;
 	const neighbors = [];
@@ -56,5 +57,5 @@ export const getBasin = (point, matrix) => {
 };
 
 export function copyMatrix(m) {
-	return m.map((row) => row.slice());
+	return JSON.parse(JSON.stringify(m));
 }
