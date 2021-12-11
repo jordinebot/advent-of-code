@@ -11,6 +11,24 @@ export const getSquareNeighbors = (point, matrix) => {
 	return neighbors;
 };
 
+export const getNeighbors = ([x, y], matrix) => {
+	const neighbors = [];
+	const offsets = [-1, 0, 1];
+	offsets.forEach((ox) =>
+		offsets.forEach((oy) => {
+			if (
+				(ox !== 0 || oy !== 0) &&
+				matrix[x + ox] !== undefined &&
+				matrix[x + ox][y + oy] !== undefined
+			) {
+				neighbors.push([x + ox, y + oy]);
+			}
+		})
+	);
+
+	return neighbors;
+};
+
 export const getHeight = (point, matrix) => {
 	const [x, y] = point;
 	return matrix[x][y];
