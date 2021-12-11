@@ -22,6 +22,7 @@ export function part1(input) {
 				depth -= x;
 		}
 	});
+
 	return position * depth;
 }
 
