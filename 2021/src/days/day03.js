@@ -56,7 +56,7 @@ function part2(input) {
 export async function day3() {
 	const data = await readStrings('data/input03');
 
-	console.log('Day 3 >>>');
+	console.log('\nDay 3 >>>');
 	console.log('    Part 1:', part1(data));
 	console.log('    Part 2:', part2(data));
 }

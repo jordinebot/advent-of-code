@@ -20,7 +20,7 @@ export async function day1() {
 	const WINDOW_SIZE = 3;
 	const data = await readNumbers('data/input01');
 
-	console.log('Day 1 >>>');
+	console.log('\nDay 1 >>>');
 	console.log('    Part 1:', part1(data));
 	console.log('    Part 2:', part2(data, WINDOW_SIZE));
 }

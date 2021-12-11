@@ -118,7 +118,7 @@ export async function day4() {
 	const BOARD_SIZE = 5;
 	const data = await readStrings('data/input04');
 
-	console.log('Day 4 >>>');
+	console.log('\nDay 4 >>>');
 	console.log('    Part 1:', part1(...parseBoards(data, BOARD_SIZE)));
 	console.log('    Part 2:', part2(...parseBoards(data, BOARD_SIZE)));
 }

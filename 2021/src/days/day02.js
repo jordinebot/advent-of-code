@@ -52,7 +52,7 @@ export async function day2() {
 	const data = await readStrings('data/input02');
 	const navigation = parseNavigation(data);
 
-	console.log('Day 2 >>>');
+	console.log('\nDay 2 >>>');
 	console.log('    Part 1:', part1(navigation));
 	console.log('    Part 2:', part2(navigation));
 }
