@@ -51,7 +51,7 @@ function printPaper(paper) {
 function readablePaper(paper) {
 	return `${colors.fg.yellow}${[[], ...paper, []]
 		.map((y) => y.join('').replaceAll('0', ' ').replaceAll('1', '█'))
-		.join('\n\t')}${colors.reset}`;
+		.join('\n\t    ')}${colors.reset}`;
 }
 
 function part1(paper, foldings) {
