@@ -1,5 +1,6 @@
 import { readStrings } from '../tools/data';
 import { orArrays } from '../tools/array';
+import { colors } from '../tools/colors';
 
 function parseInstructions(input) {
 	const coordinates = input[0].split('\n').map((c) => c.split(','));
@@ -48,9 +49,9 @@ function printPaper(paper) {
 }
 
 function readablePaper(paper) {
-	return [[], ...paper]
+	return `${colors.fg.yellow}${[[], ...paper, []]
 		.map((y) => y.join('').replaceAll('0', ' ').replaceAll('1', '█'))
-		.join('\n\t');
+		.join('\n\t')}${colors.reset}`;
 }
 
 function part1(paper, foldings) {
