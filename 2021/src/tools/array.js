@@ -15,9 +15,16 @@ export function mean(a) {
 }
 
 export function sumArrays(a, b) {
-	return a.reduce((total, current, index) => {
-		total[index] = current + (b[index] ?? 0);
-		return total;
+	return a.reduce((sum, current, index) => {
+		sum[index] = current + (b[index] ?? 0);
+		return sum;
+	}, Array(a.length).fill(0));
+}
+
+export function orArrays(a, b) {
+	return a.reduce((or, current, index) => {
+		or[index] = current || b[index] ? 1 : 0;
+		return or;
 	}, Array(a.length).fill(0));
 }
 
