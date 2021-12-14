@@ -11,29 +11,30 @@ function parseData(input) {
 }
 
 function getPairs(template) {
-	const pairs = [];
+	const pairs = {};
 	for (let i = 0; i < template.length; i++) {
 		const pair = template.slice(i, i + 2);
 		if (pair.length === 2) {
-			pairs.push(pair);
+			countPair(pair, pairs);
 		}
 	}
 	return pairs;
 }
 
 function expand(pairs, rules, elements, steps) {
-	if (steps <= 0) {
-		return Math.max(...Object.values(elements)) - Math.min(...Object.values(elements));
-	} else {
-		const expanded = [];
-		pairs.forEach((pair) => {
+	for (let i = 0; i < steps; i++) {
+		const newPairs = {};
+		Object.entries(pairs).forEach(([pair, count]) => {
 			const element = rules[pair];
-			countElement(element, elements);
-			expanded.push(`${pair[0]}${element}`);
-			expanded.push(`${element}${pair[1]}`);
+			const pair1 = `${pair[0]}${element}`;
+			const pair2 = `${element}${pair[1]}`;
+			countPair(pair1, newPairs, count);
+			countPair(pair2, newPairs, count);
+			countElement(element, elements, count);
 		});
-		return expand(expanded, rules, elements, steps - 1);
+		pairs = newPairs;
 	}
+	return Math.max(...Object.values(elements)) - Math.min(...Object.values(elements));
 }
 
 function initElements(template) {
@@ -44,8 +45,13 @@ function initElements(template) {
 	return elements;
 }
 
-function countElement(e, elements) {
-	elements[e] = elements[e] !== undefined ? elements[e] + 1 : 1;
+function countPair(p, pairs, count = 1) {
+	pairs[p] = pairs[p] !== undefined ? pairs[p] + count : count;
+	return pairs;
+}
+
+function countElement(e, elements, count = 1) {
+	elements[e] = elements[e] !== undefined ? elements[e] + count : count;
 	return elements;
 }
 
@@ -55,7 +61,6 @@ function part1(pairs, rules, elements) {
 
 function part2(pairs, rules, elements) {
 	return expand(pairs, rules, elements, 40);
-
 }
 
 export async function day14() {
