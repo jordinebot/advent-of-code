@@ -10,76 +10,61 @@ function parseData(input) {
 	return [template, rules];
 }
 
-function expand(template, rules) {
-	let polymer = template.split('');
-	let inserted = 0;
+function getPairs(template) {
+	const pairs = [];
 	for (let i = 0; i < template.length; i++) {
 		const pair = template.slice(i, i + 2);
 		if (pair.length === 2) {
-			polymer.splice(i + inserted + 1, 0, rules[pair]);
-			inserted++;
+			pairs.push(pair);
 		}
 	}
-	return polymer.join('');
+	return pairs;
 }
 
-function countElements(polymer) {
+function expand(pairs, rules, elements, steps) {
+	if (steps <= 0) {
+		return Math.max(...Object.values(elements)) - Math.min(...Object.values(elements));
+	} else {
+		const expanded = [];
+		pairs.forEach((pair) => {
+			const element = rules[pair];
+			countElement(element, elements);
+			expanded.push(`${pair[0]}${element}`);
+			expanded.push(`${element}${pair[1]}`);
+		});
+		return expand(expanded, rules, elements, steps - 1);
+	}
+}
+
+function initElements(template) {
 	const elements = {};
-	for (const element of polymer) {
-		elements[element] = elements[element] ? elements[element] + 1 : 1;
+	for (const element of template) {
+		countElement(element, elements);
 	}
 	return elements;
 }
-function lessCommonQty(polymer) {
-	const count = countElements(polymer);
-	return Object.values(count).reduce(
-		(lessCommon, current) => (current < lessCommon ? current : lessCommon),
-		Infinity
-	);
-}
-function mostCommonQty(polymer) {
-	const count = countElements(polymer);
-	return Object.values(count).reduce(
-		(mostCommon, current) => (current > mostCommon ? current : mostCommon),
-		-Infinity
-	);
+
+function countElement(e, elements) {
+	elements[e] = elements[e] !== undefined ? elements[e] + 1 : 1;
+	return elements;
 }
 
-function part1(template, rules) {
-	let steps = 10;
-	let polymer = template;
-
-	while (steps-- > 0) {
-		polymer = expand(polymer, rules);
-	}
-
-	const mcq = mostCommonQty(polymer);
-	const lcq = lessCommonQty(polymer);
-
-	return mcq - lcq;
+function part1(pairs, rules, elements) {
+	return expand(pairs, rules, elements, 10);
 }
-function part2(template, rules) {
-	let steps = 40;
-	let polymer = template;
 
-	while (steps-- > 0) {
-		polymer = expand(polymer, rules);
-	}
-
-	const mcq = mostCommonQty(polymer);
-	const lcq = lessCommonQty(polymer);
-
-	return mcq - lcq;
+function part2(pairs, rules, elements) {
+	return expand(pairs, rules, elements, 40);
 
 }
 
 export async function day14() {
-	// const data = await readStrings('data/sample14');
 	const data = await readStrings('data/input14');
 
 	const [template, rules] = parseData(data);
+	const pairs = getPairs(template);
 
 	console.log('\nDay 14 >>>');
-	console.log('    Part 1:', part1(template, rules));
-	console.log('    Part 2:\n', part2(template, rules));
+	console.log('    Part 1:', part1(pairs, rules, initElements(template)));
+	console.log('    Part 2:', part2(pairs, rules, initElements(template)));
 }
