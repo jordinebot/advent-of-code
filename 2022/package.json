@@ -1,0 +1,27 @@
+{
+  "name": "aoc-2022",
+  "version": "1.0.0",
+  "description": "My solutions to AoC 2022 in JS",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node --experimental-specifier-resolution=node src/index.js",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordinebot/advent-of-code.git"
+  },
+  "keywords": [
+    "advent-of-code"
+  ],
+  "author": "Jordi Nebot",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jordinebot/advent-of-code/issues"
+  },
+  "homepage": "https://github.com/jordinebot/advent-of-code#readme",
+  "devDependencies": {
+    "jest": "^29.3.1"
+  }
+}
