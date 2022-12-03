@@ -6,23 +6,38 @@ const DRAW_SCORE = 3;
 const wins = ["A Y", "B Z", "C X"];
 const draws = ["A X", "B Y", "C Z"];
 
-const value = { // part 1
-    X: 1, Y: 2, Z: 3,
+const value = {
+	// part 1
+	X: 1,
+	Y: 2,
+	Z: 3,
 };
 
-const hint = { // part 2
-	X: 0, Y: DRAW_SCORE, Z: WIN_SCORE,
+const hint = {
+	// part 2
+	X: 0,
+	Y: DRAW_SCORE,
+	Z: WIN_SCORE,
 };
 
 const requiredPlay = {
-	Z: { // to win
-	    A: "Y", B: "Z", C: "X",
+	Z: {
+		// to win
+		A: "Y",
+		B: "Z",
+		C: "X",
 	},
-	Y: { // to draw
-		A: "X", B: "Y", C: "Z",
+	Y: {
+		// to draw
+		A: "X",
+		B: "Y",
+		C: "Z",
 	},
-	X: { // to lose
-		A: "Z", B: "X", C: "Y",
+	X: {
+		// to lose
+		A: "Z",
+		B: "X",
+		C: "Y",
 	},
 };
 
