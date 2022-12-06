@@ -1,3 +1,3 @@
 import * as days from './days';
 
-days.day03()
+days.day06()

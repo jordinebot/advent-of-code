@@ -4,7 +4,7 @@ export async function readStrings(filename, split = '\n') {
 	let buffer = undefined;
 	try {
 		buffer = await readFile(filename);
-		buffer = buffer.toString().trim().split(split);
+		buffer = buffer.toString().split(split);
 	} catch (error) {
 		console.error(error);
 	}

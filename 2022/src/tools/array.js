@@ -13,5 +13,12 @@ export function arrayChunks(a, size) {
 			return groups;
 		},
 		[[]]
-	)
+	);
+}
+
+export function range(a, b) {
+	if (a > b) {
+		return [];
+	}
+	return [...new Array(b - a + 1)].map((_, i) => a + i);
 }

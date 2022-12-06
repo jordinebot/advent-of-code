@@ -1,4 +1,4 @@
-import {readStrings} from '../tools/data';
+import { readStrings } from "../tools/data";
 import { part01, part02 } from "./day03";
 
 describe("Day 03", () => {
