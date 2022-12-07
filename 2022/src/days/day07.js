@@ -57,11 +57,11 @@ export function part02(input) {
 	const system = filesystem(input);
 	const sizes = du(system);
 	const freeSpace = DISK_SIZE - sizes["/"];
-	const candidates = Object.entries(sizes).filter(
-		([folder, size]) => freeSpace + size >= REQUIRED_SIZE
+	const candidates = Object.values(sizes).filter(
+		(size) => freeSpace + size >= REQUIRED_SIZE
 	);
-	candidates.sort((a, b) => a[1] - b[1]);
-	return candidates[0][1];
+	candidates.sort((a, b) => a - b);
+	return candidates[0];
 }
 
 export async function day07() {
