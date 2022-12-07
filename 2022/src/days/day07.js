@@ -1,6 +1,9 @@
 import { readStrings } from "../tools/data";
+import { arraySum } from "../tools/array";
 
 const THRESHOLD = 100000;
+const DISK_SIZE = 70000000;
+const REQUIRED_SIZE = 30000000;
 
 export function chdir($, current) {
 	const path = $.replace("$ cd ", "");
@@ -13,7 +16,7 @@ export function chdir($, current) {
 	}
 }
 
-export function explore(input) {
+export function filesystem(input) {
 	const system = {};
 	let pwd = "";
 	input.forEach(($) => {
@@ -47,15 +50,20 @@ export function du(system) {
 }
 
 export function part01(input) {
-	const system = explore(input);
+	const system = filesystem(input);
 	const sizes = du(system);
-	return Object.values(sizes)
-		.filter((s) => s < THRESHOLD)
-		.reduce((total, current) => total + current, 0);
+	return arraySum(Object.values(sizes).filter((s) => s < THRESHOLD));
 }
 
 export function part02(input) {
-	return input;
+	const system = filesystem(input);
+	const sizes = du(system);
+	const freeSpace = DISK_SIZE - sizes["/"];
+	const candidates = Object.entries(sizes).filter(
+		([folder, size]) => freeSpace + size >= REQUIRED_SIZE
+	);
+	candidates.sort((a, b) => a[1] - b[1]);
+	return candidates[0][1];
 }
 
 export async function day07() {

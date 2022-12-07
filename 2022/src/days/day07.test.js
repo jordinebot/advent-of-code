@@ -16,7 +16,7 @@ describe("Day 07", () => {
 
 	describe("Part 02", () => {
 		it("should return the correct result", () => {
-			expect(part02(data)).toBe(95437);
+			expect(part02(data)).toBe(24933642);
 		});
 	});
 });
