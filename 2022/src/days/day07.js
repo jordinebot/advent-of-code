@@ -24,11 +24,11 @@ export function filesystem(input) {
 			pwd = chdir($, pwd);
 		}
 		if (/^\$ ls/.test($)) {
-			system[pwd] = [];
+			system[pwd] = 0;
 		}
 		if (/^\d+/.test($)) {
 			const [size] = $.split(" ");
-			system[pwd].push(Number(size));
+			system[pwd] += Number(size);
 		}
 	});
 	return system;
@@ -40,9 +40,7 @@ export function du(system) {
 	paths.forEach((path) => {
 		const includes = paths.filter((p) => p.includes(path));
 		sizes[path] = includes.reduce(
-			(total, current) =>
-				total +
-				system[current].reduce((partial, size) => partial + size, 0),
+			(total, current) => total + system[current],
 			0
 		);
 	});
