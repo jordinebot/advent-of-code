@@ -15,3 +15,8 @@ export async function readNumbers(filename, split = '\n') {
 	const buffer = await readStrings(filename, split);
 	return buffer.map((n) => parseInt(n, 10));
 }
+
+export async function readMatrix(filename, split = '\n') {
+	const buffer = await readStrings(filename, split);
+	return buffer.map((row) => row.split('').map((col) => Number(col)));
+}
