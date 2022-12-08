@@ -60,8 +60,7 @@ export function part02(input) {
 	const candidates = Object.values(sizes).filter(
 		(size) => freeSpace + size >= REQUIRED_SIZE
 	);
-	candidates.sort((a, b) => a - b);
-	return candidates[0];
+	return Math.min(...candidates);
 }
 
 export async function day07() {
