@@ -6,3 +6,4 @@ export * from './day05';
 export * from './day06';
 export * from './day07';
 export * from './day08';
+export * from './day09';
