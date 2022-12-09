@@ -3,7 +3,7 @@ import { readStrings } from "../tools/data";
 
 export function moveTail([hx, hy], [tx, ty]) {
 	const [dx, dy] = [hx - tx, hy - ty];
-	const dist = Math.max(Math.abs(dx), Math.abs(dy));
+	const dist = Math.max(Math.abs(dx), Math.abs(dy)); // https://en.wikipedia.org/wiki/Chebyshev_distance
 
 	return dist < 2
 		? [tx, ty]
