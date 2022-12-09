@@ -1,3 +1,4 @@
+// --- Day 9: Rope Bridge ---
 import { readStrings } from "../tools/data";
 
 export function moveTail([hx, hy], [tx, ty]) {
@@ -7,33 +8,37 @@ export function moveTail([hx, hy], [tx, ty]) {
 			return [tx + 1, ty];
 		case "2,1":
 		case "1,2":
+		case "2,2":
 			return [tx + 1, ty + 1];
 		case "0,2":
 			return [tx, ty + 1];
 		case "-1,2":
 		case "-2,1":
+		case "-2,2":
 			return [tx - 1, ty + 1];
 		case "-2,0":
 			return [tx - 1, ty];
 		case "-2,-1":
 		case "-1,-2":
+		case "-2,-2":
 			return [tx - 1, ty - 1];
 		case "0,-2":
 			return [tx, ty - 1];
 		case "1,-2":
 		case "2,-1":
+		case "2,-2":
 			return [tx + 1, ty - 1];
 		default:
 			return [tx, ty];
 	}
 }
 
-export function getTailPath(input) {
-	const head = [[0, 0]];
-	const tail = [[0, 0]];
+export function getTailPath(input, ropeLength) {
+	const rope = Array.from(Array(ropeLength), () => [[0, 0]]);
 	input.forEach((command) => {
 		const [direction, steps] = command.split(" ");
-		for (let step = 0; step < steps; step++) {
+		for (let step = 0; step < Number(steps); step++) {
+			const head = rope[0];
 			const [hx, hy] = head[0];
 			switch (direction) {
 				case "U":
@@ -49,20 +54,21 @@ export function getTailPath(input) {
 					head.unshift([hx + 1, hy]);
 					break;
 			}
-			tail.unshift(moveTail(head[0], tail[0]));
+			for (let knot = 1; knot < rope.length; knot++) {
+				rope[knot].unshift(moveTail(rope[knot - 1][0], rope[knot][0]));
+			}
 		}
 	});
-	return tail;
+	return rope[rope.length - 1];
 }
 
 export function part01(input) {
-	
-	const tailPath = getTailPath(input);
+	const tailPath = getTailPath(input, 2);
 	return new Set(tailPath.map((t) => t.join(","))).size;
 }
 
 export function part02(input) {
-	const tailPath = getTailPath(input);
+	const tailPath = getTailPath(input, 10);
 	return new Set(tailPath.map((t) => t.join(","))).size;
 }
 
