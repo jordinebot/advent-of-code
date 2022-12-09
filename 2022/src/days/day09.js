@@ -2,35 +2,15 @@
 import { readStrings } from "../tools/data";
 
 export function moveTail([hx, hy], [tx, ty]) {
-	const dist = [hx - tx, hy - ty].join(",");
-	switch (dist) {
-		case "2,0":
-			return [tx + 1, ty];
-		case "2,1":
-		case "1,2":
-		case "2,2":
-			return [tx + 1, ty + 1];
-		case "0,2":
-			return [tx, ty + 1];
-		case "-1,2":
-		case "-2,1":
-		case "-2,2":
-			return [tx - 1, ty + 1];
-		case "-2,0":
-			return [tx - 1, ty];
-		case "-2,-1":
-		case "-1,-2":
-		case "-2,-2":
-			return [tx - 1, ty - 1];
-		case "0,-2":
-			return [tx, ty - 1];
-		case "1,-2":
-		case "2,-1":
-		case "2,-2":
-			return [tx + 1, ty - 1];
-		default:
-			return [tx, ty];
-	}
+	const [dx, dy] = [hx - tx, hy - ty];
+	const dist = Math.max(Math.abs(dx), Math.abs(dy));
+
+	return dist < 2
+		? [tx, ty]
+		: [
+				dx > 0 ? tx + 1 : dx < 0 ? tx - 1 : tx,
+				dy > 0 ? ty + 1 : dy < 0 ? ty - 1 : ty,
+		  ];
 }
 
 export function getTailPath(input, ropeLength) {
