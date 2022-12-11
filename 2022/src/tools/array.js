@@ -2,6 +2,10 @@ export function arraySum(a) {
 	return a.reduce((total, current) => total + current, 0);
 }
 
+export function arrayProd(a) {
+	return a.reduce((total, current) => total * current, 1);
+}
+
 export function arrayChunks(a, size) {
 	return a.reduce(
 		(groups, current) => {
