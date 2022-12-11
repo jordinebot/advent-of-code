@@ -24,8 +24,9 @@ export function part01(input) {
 	return signal;
 }
 
+const SCREEN_ROWS = 6;
+const SCREEN_COLS = 40;
 export function drawPixel(screen, cycle, x) {
-	const SCREEN_COLS = 40;
 	let pixel = ".";
 	if (cycle % SCREEN_COLS >= x - 1 && cycle % SCREEN_COLS <= x + 1) {
 		pixel = "#";
@@ -38,15 +39,16 @@ export function drawPixel(screen, cycle, x) {
 }
 
 export function part02(input) {
-	const screen = [["#"]];
+	const screen = [['#']];
 	let x = 1;
-	for (let cycle = 1; cycle < 240; cycle++) {
+
+	for (let cycle = 1; cycle < SCREEN_COLS * SCREEN_ROWS; cycle++) {
 		drawPixel(screen, cycle, x);
 		const instruction = input.shift();
 		if (instruction !== "noop") {
 			const [, value] = instruction.split(" ");
-			x += Number(value);
 			cycle++;
+			x += Number(value);
 			drawPixel(screen, cycle, x);
 		}
 	}
