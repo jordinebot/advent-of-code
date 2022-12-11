@@ -24,18 +24,13 @@ function parseInput(input) {
 	const monkeys = [];
 	input.forEach((m) => {
 		const parts = m.split("\n");
-
 		const items = parts[1]
 			.replace(/^[^:]+: /, "")
 			.split(", ")
 			.map((n) => Number(n));
-
 		const worryFn = createWorryFn(parts[2].replace(/^[^=]+= /, ""));
-
 		const testValue = Number(parts[3].match(/(\d+)/)[0]);
-
 		const testFn = createTestFn(testValue);
-
 		const throwTo = {
 			true: Number(parts[4].match(/(\d+)/)[0]),
 			false: Number(parts[5].match(/(\d+)/)[0]),
