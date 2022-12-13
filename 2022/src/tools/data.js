@@ -1,10 +1,11 @@
 import { readFile } from 'fs/promises';
 
-export async function readStrings(filename, split = '\n') {
+export async function readStrings(filename, split = '\n', transform = (row) => row) {
 	let buffer = undefined;
 	try {
 		buffer = await readFile(filename);
 		buffer = buffer.toString().split(split);
+		buffer = buffer.map(transform)
 	} catch (error) {
 		console.error(error);
 	}
