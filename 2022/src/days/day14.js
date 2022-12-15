@@ -1,5 +1,4 @@
 // --- Day 14: Regolith Reservoir ---
-import { deepEqual } from "fast-equals";
 import { readStrings } from "../tools/data";
 
 function point(x, y) {
@@ -47,6 +46,26 @@ function dropSand(sandmap, box, start) {
 	}
 }
 
+function dropSandFloor(sandmap, floor, start) {
+	let [x, y] = coords(start);
+	let cx, cy;
+	do {
+		cx = x;
+		cy = y;
+		while (!sandmap.has(point(x, y + 1)) && y + 1 < floor) {
+			y++;
+		}
+		if (!sandmap.has(point(x - 1, y + 1)) && y + 1 < floor) {
+			x--;
+			y++;
+		} else if (!sandmap.has(point(x + 1, y + 1)) && y + 1 < floor) {
+			x++;
+			y++;
+		}
+	} while (x !== cx || y !== cy);
+	sandmap.add(point(x, y));
+}
+
 function buildSandmap(input) {
 	const sandmap = new Set();
 	let box = [
@@ -90,17 +109,25 @@ function buildSandmap(input) {
 export function part01(input) {
 	const { sandmap, box } = buildSandmap(input);
 	let size;
-	let drops = -1;
+	let drops = 0;
 	do {
 		drops++;
 		size = sandmap.size;
 		dropSand(sandmap, box, point(500, 0));
-	} while (size !== sandmap.size && drops < 1000);
-	return drops;
+	} while (size !== sandmap.size);
+	return drops - 1;
 }
 
+const FLOOR_OFFSET = 2;
 export function part02(input) {
-	return input.length;
+	const { sandmap, box } = buildSandmap(input);
+	let drops = 0;
+	const floor = box[1][1] + FLOOR_OFFSET;
+	do {
+		drops++;
+		dropSandFloor(sandmap, floor, point(500, 0));
+	} while (!sandmap.has(point(500, 0)));
+	return drops;
 }
 
 export async function day14() {
